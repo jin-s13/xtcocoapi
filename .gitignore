@@ -10,3 +10,4 @@ PythonAPI/xtcocotools/_mask.so
 PythonAPI/xtcocotools/coco.pyc
 PythonAPI/xtcocotools/cocoeval.pyc
 PythonAPI/xtcocotools/mask.pyc
+PythonAPI/dist/
