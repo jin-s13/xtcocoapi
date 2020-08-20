@@ -67,8 +67,8 @@ class COCOeval:
     # Licensed under the Simplified BSD License [see coco/license.txt]
     ######################################################################
     # Updated and renamed to Extended COCO Toolbox (excocotool) \
-    # by Sheng Jin in 2020. The Extended COCO Toolbox is developed to
-    # support multiple pose-related datasets, including COCO,
+    # by Sheng Jin & Can Wang in 2020. The Extended COCO Toolbox is
+    # developed to support multiple pose-related datasets, including COCO,
     # CrowdPose and so on.
 
     def __init__(self, cocoGt=None, cocoDt=None, iouType='keypoints', sigmas=None, use_area=True):

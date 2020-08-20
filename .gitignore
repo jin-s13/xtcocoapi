@@ -1,0 +1,12 @@
+build/
+images/
+results/
+external/
+.DS_Store
+
+PythonAPI/excocotools/__init__.pyc
+PythonAPI/excocotools/_mask.c
+PythonAPI/excocotools/_mask.so
+PythonAPI/excocotools/coco.pyc
+PythonAPI/excocotools/cocoeval.pyc
+PythonAPI/excocotools/mask.pyc
