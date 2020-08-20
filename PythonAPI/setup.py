@@ -22,6 +22,8 @@ setup(
         'cython>=0.27.3',
         'matplotlib>=2.1.0'
     ],
-    version='2.0',
+    version='1.0',
+    description="Extended COCO API",
+    url="https://github.com/jin-s13/excocoapi",
     ext_modules= ext_modules
 )
