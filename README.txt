@@ -6,7 +6,7 @@ Our Extended COCO API is developed based on [@cocodataset/cocoapi](https://githu
 
 We aim to provide a unified evaluation tools to support multiple human pose-related datasets, including COCO, [CrowdPose](https://github.com/Jeff-sjtu/CrowdPose) and so on.
 
-We provide a simple [demo](PythonAPI/demo_crowdpose.py) to evaluate on CrowdPose dataset.
+We provide a simple [demo](demo_crowdpose.py) to evaluate on CrowdPose dataset.
 
 To install:
--run "sh install.sh" under coco/PythonAPI
+-run "sh install.sh"
