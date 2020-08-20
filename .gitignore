@@ -4,10 +4,11 @@ results/
 external/
 .DS_Store
 
-PythonAPI/xtcocotools/__init__.pyc
-PythonAPI/xtcocotools/_mask.c
-PythonAPI/xtcocotools/_mask.so
-PythonAPI/xtcocotools/coco.pyc
-PythonAPI/xtcocotools/cocoeval.pyc
-PythonAPI/xtcocotools/mask.pyc
-PythonAPI/dist/
+xtcocotools/__init__.pyc
+xtcocotools/_mask.c
+xtcocotools/_mask.so
+xtcocotools/coco.pyc
+xtcocotools/cocoeval.pyc
+xtcocotools/mask.pyc
+dist/
+xtcocotools.egg-info/
