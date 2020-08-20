@@ -1,4 +1,4 @@
-Extended COCO API (excocotools)
+Extended COCO API (xtcocotools)
 
 
 COCO has become a standard annotation format for the task of person keypoint detection, and is widely used for multiple datasets.

@@ -1,12 +1,12 @@
 # Interface for accessing the Microsoft COCO dataset.
 
 # Microsoft COCO is a large image dataset designed for object detection,
-# segmentation, and caption generation. excocotools is a Python API that
+# segmentation, and caption generation. xtcocotools is a Python API that
 # assists in loading, parsing and visualizing the annotations in COCO.
 # Please visit http://mscoco.org/ for more information on COCO, including
 # for the data, paper, and tutorials. The exact format of the annotations
-# is also described on the COCO website. For example usage of the excocotools
-# please see excocotools_demo.ipynb. In addition to this API, please download both
+# is also described on the COCO website. For example usage of the xtcocotools
+# please see xtcocotools_demo.ipynb. In addition to this API, please download both
 # the COCO images and annotations in order to run the demo.
 
 # An alternative to using the API is to load the annotations directly
@@ -41,7 +41,7 @@
 # by Piotr Dollar and Tsung-Yi Lin, 2014.
 # Licensed under the Simplified BSD License [see bsd.txt]
 ######################################################################
-# Updated and renamed to Extended COCO Toolbox (excocotool) \
+# Updated and renamed to Extended COCO Toolbox (xtcocotool) \
 # by Sheng Jin & Can Wang in 2020. The Extended COCO Toolbox is
 # developed to support multiple pose-related datasets, including COCO,
 # CrowdPose and so on.

@@ -1,6 +1,6 @@
 __author__ = 'tsungyi'
 
-import excocotools._mask as _mask
+import xtcocotools._mask as _mask
 
 # Interface for manipulating masks stored in RLE format.
 #

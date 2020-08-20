@@ -65,7 +65,7 @@ class COCOeval:
     # # by Piotr Dollar and Tsung-Yi Lin, 2014.
     # # Licensed under the Simplified BSD License [see bsd.txt]
     ######################################################################
-    # Updated and renamed to Extended COCO Toolbox (excocotool) \
+    # Updated and renamed to Extended COCO Toolbox (xtcocotool) \
     # by Sheng Jin & Can Wang in 2020. The Extended COCO Toolbox is
     # developed to support multiple pose-related datasets, including COCO,
     # CrowdPose and so on.

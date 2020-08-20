@@ -4,9 +4,9 @@ results/
 external/
 .DS_Store
 
-PythonAPI/excocotools/__init__.pyc
-PythonAPI/excocotools/_mask.c
-PythonAPI/excocotools/_mask.so
-PythonAPI/excocotools/coco.pyc
-PythonAPI/excocotools/cocoeval.pyc
-PythonAPI/excocotools/mask.pyc
+PythonAPI/xtcocotools/__init__.pyc
+PythonAPI/xtcocotools/_mask.c
+PythonAPI/xtcocotools/_mask.so
+PythonAPI/xtcocotools/coco.pyc
+PythonAPI/xtcocotools/cocoeval.pyc
+PythonAPI/xtcocotools/mask.pyc
