@@ -2,8 +2,8 @@ from xtcocotools.coco import COCO
 from xtcocotools.cocoeval import COCOeval
 import numpy as np
 
-gt_file = '../annotations/crowdpose_val.json'
-preds = '../annotations/crowdpose_preds.json'
+gt_file = 'annotations/crowdpose_val.json'
+preds = 'annotations/crowdpose_preds.json'
 
 sigmas = np.array([
             .79, .79, .72, .72, .62, .62, 1.07, 1.07, .87, .87, .89, .89, .79,
