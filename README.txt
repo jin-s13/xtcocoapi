@@ -9,4 +9,4 @@ We aim to provide a unified evaluation tools to support multiple human pose-rela
 We provide a simple [demo](demo_crowdpose.py) to evaluate on CrowdPose dataset.
 
 To install:
--run "sh install.sh"
+-run "make"
