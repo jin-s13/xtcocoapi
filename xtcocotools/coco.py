@@ -323,7 +323,8 @@ class COCO:
         """
         res = COCO()
         res.dataset['images'] = [img for img in self.dataset['images']]
-        self.anno_file.append(resFile)
+        if len(self.anno_file) == 1:
+            self.anno_file.append(resFile)
         print('Loading and preparing results...')
         tic = time.time()
         if type(resFile) == str or (PYTHON_VERSION == 2 and type(resFile) == unicode):

@@ -1,3 +1,4 @@
+.idea/
 build/
 images/
 results/
@@ -7,6 +8,7 @@ external/
 xtcocotools/__init__.pyc
 xtcocotools/_mask.c
 xtcocotools/_mask.so
+xtcocotools/_mask*.so
 xtcocotools/coco.pyc
 xtcocotools/cocoeval.pyc
 xtcocotools/mask.pyc
