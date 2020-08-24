@@ -12,5 +12,6 @@ xtcocotools/_mask*.so
 xtcocotools/coco.pyc
 xtcocotools/cocoeval.pyc
 xtcocotools/mask.pyc
+xtcocotools/__pycache__/
 dist/
 xtcocotools.egg-info/
