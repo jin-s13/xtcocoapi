@@ -8,5 +8,8 @@ We aim to provide a unified evaluation tools to support multiple human pose-rela
 
 We provide a simple [demo](demo_crowdpose.py) to evaluate on CrowdPose dataset; and [demo](demo_coco.py) to evaluate on COCO dataset.
 
-To install:
+To install from pip:
+-pip install xtcocotools
+
+To install from source:
 -run "make"
