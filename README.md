@@ -10,7 +10,11 @@ We provide a simple [demo_crowdpose](demos/demo_crowdpose.py) to evaluate on Cro
 
 ## Installation
 To install from pip:
--pip install xtcocotools
+```shell
+pip install xtcocotools
+```
 
 To install from source:
--run "make"
+```shell
+make
+```
