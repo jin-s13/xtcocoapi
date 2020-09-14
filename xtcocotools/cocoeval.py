@@ -82,7 +82,7 @@ class COCOeval:
         :return: None
         '''
         if not iouType:
-            print('iouType not specified. use default iouType segm')
+            print('iouType not specified. use default iouType keypoints')
         if sigmas is not None:
             self.sigmas = sigmas
         else:
@@ -132,7 +132,31 @@ class COCOeval:
             gt['ignore'] = gt['ignore'] if 'ignore' in gt else 0
             gt['ignore'] = 'iscrowd' in gt and gt['iscrowd']
             if 'keypoints' in p.iouType:
-                gt['ignore'] = (gt['num_keypoints'] == 0) or gt['ignore']
+                if p.iouType == 'keypoints_wholebody':
+                    body_gt = gt['keypoints']
+                    foot_gt = gt['foot_kpts']
+                    face_gt = gt['face_kpts']
+                    lefthand_gt = gt['lefthand_kpts']
+                    righthand_gt = gt['righthand_kpts']
+                    wholebody_gt = body_gt + foot_gt + face_gt + lefthand_gt + righthand_gt
+                    g = np.array(wholebody_gt)
+                    k = np.count_nonzero(g[2::3] > 0)
+                elif p.iouType == 'keypoints_foot':
+                    g = np.array(gt['foot_kpts'])
+                    k = np.count_nonzero(g[2::3] > 0)
+                elif p.iouType == 'keypoints_face':
+                    g = np.array(gt['face_kpts'])
+                    k = np.count_nonzero(g[2::3] > 0)
+                elif p.iouType == 'keypoints_lefthand':
+                    g = np.array(gt['lefthand_kpts'])
+                    k = np.count_nonzero(g[2::3] > 0)
+                elif p.iouType == 'keypoints_righthand':
+                    g = np.array(gt['righthand_kpts'])
+                    k = np.count_nonzero(g[2::3] > 0)
+                else:
+                    k = gt['num_keypoints']
+
+                gt['ignore'] = (k == 0) or gt['ignore']
         self._gts = defaultdict(list)       # gt for evaluation
         self._dts = defaultdict(list)       # dt for evaluation
         for gt in gts:
@@ -232,14 +256,50 @@ class COCOeval:
         # compute oks between each detection and ground truth object
         for j, gt in enumerate(gts):
             # create bounds for ignore regions(double the gt bbox)
-            g = np.array(gt['keypoints'])
+            if p.iouType == 'keypoints_wholebody':
+                body_gt = gt['keypoints']
+                foot_gt = gt['foot_kpts']
+                face_gt = gt['face_kpts']
+                lefthand_gt = gt['lefthand_kpts']
+                righthand_gt = gt['righthand_kpts']
+                wholebody_gt = body_gt + foot_gt + face_gt + lefthand_gt + righthand_gt
+                g = np.array(wholebody_gt)
+            elif p.iouType == 'keypoints_foot':
+                g = np.array(gt['foot_kpts'])
+            elif p.iouType == 'keypoints_face':
+                g = np.array(gt['face_kpts'])
+            elif p.iouType == 'keypoints_lefthand':
+                g = np.array(gt['lefthand_kpts'])
+            elif p.iouType == 'keypoints_righthand':
+                g = np.array(gt['righthand_kpts'])
+            else:
+                g = np.array(gt['keypoints'])
+
             xg = g[0::3]; yg = g[1::3]; vg = g[2::3]
             k1 = np.count_nonzero(vg > 0)
             bb = gt['bbox']
             x0 = bb[0] - bb[2]; x1 = bb[0] + bb[2] * 2
             y0 = bb[1] - bb[3]; y1 = bb[1] + bb[3] * 2
             for i, dt in enumerate(dts):
-                d = np.array(dt['keypoints'])
+                if p.iouType == 'keypoints_wholebody':
+                    body_dt = dt['keypoints']
+                    foot_dt = dt['foot_kpts']
+                    face_dt = dt['face_kpts']
+                    lefthand_dt = dt['lefthand_kpts']
+                    righthand_dt = dt['righthand_kpts']
+                    wholebody_dt = body_dt + foot_dt + face_dt + lefthand_dt + righthand_dt
+                    d = np.array(wholebody_dt)
+                elif p.iouType == 'keypoints_foot':
+                    d = np.array(dt['foot_kpts'])
+                elif p.iouType == 'keypoints_face':
+                    d = np.array(dt['face_kpts'])
+                elif p.iouType == 'keypoints_lefthand':
+                    d = np.array(dt['lefthand_kpts'])
+                elif p.iouType == 'keypoints_righthand':
+                    d = np.array(dt['righthand_kpts'])
+                else:
+                    d = np.array(dt['keypoints'])
+
                 xd = d[0::3]; yd = d[1::3]
                 if k1>0:
                     # measure the per-keypoint distance if keypoints visible
@@ -552,10 +612,10 @@ class COCOeval:
         iouType = self.params.iouType
         if iouType == 'segm' or iouType == 'bbox':
             summarize = _summarizeDets
-        elif iouType == 'keypoints':
-            summarize = _summarizeKps
         elif iouType == 'keypoints_crowd':
             summarize = _summarizeKps_crowd
+        elif 'keypoints' in iouType:
+            summarize = _summarizeKps
         self.stats = summarize()
 
     def __str__(self):
