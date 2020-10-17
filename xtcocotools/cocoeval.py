@@ -578,9 +578,9 @@ class COCOeval:
             stats[0] = _summarize(1, maxDets=20)
             stats[1] = _summarize(1, maxDets=20, iouThr=.5)
             stats[2] = _summarize(1, maxDets=20, iouThr=.75)
-            stats[5] = _summarize(0, maxDets=20)
-            stats[6] = _summarize(0, maxDets=20, iouThr=.5)
-            stats[7] = _summarize(0, maxDets=20, iouThr=.75)
+            stats[3] = _summarize(0, maxDets=20)
+            stats[4] = _summarize(0, maxDets=20, iouThr=.5)
+            stats[5] = _summarize(0, maxDets=20, iouThr=.75)
             type_result = self.get_type_result(first=0.2, second=0.8)
 
             p = self.params
@@ -591,6 +591,10 @@ class COCOeval:
             print(iStr.format(titleStr, typeStr, iouStr, 'easy', 20, type_result[0]))
             print(iStr.format(titleStr, typeStr, iouStr, 'medium', 20, type_result[1]))
             print(iStr.format(titleStr, typeStr, iouStr, 'hard', 20, type_result[2]))
+            stats[6] = type_result[0]
+            stats[7] = type_result[1]
+            stats[8] = type_result[2]
+
             return stats
 
         def _summarizeKps():

@@ -2,9 +2,9 @@
 
 ## News
 
-[2020.9] Release xtcocotools v1.5. Support COCO-WholeBody Dataset.
+[2020.9.14] Release xtcocotools v1.5. Support COCO-WholeBody Dataset.
 
-[2020.8] Release xtcocotools v1.0. Support COCO, AIChallenger, and CrowdPose Dataset.
+[2020.8.25] Release xtcocotools v1.0. Support COCO, AIChallenger, and CrowdPose Dataset.
 
 ## Introduction
 COCO has become a standard annotation format for the task of person keypoint detection, and is widely used for multiple datasets.
