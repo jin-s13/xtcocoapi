@@ -574,7 +574,7 @@ class COCOeval:
             #   journal={arXiv preprint arXiv:1812.00324},
             #   year={2018}
             # }
-            stats = np.zeros((11,))
+            stats = np.zeros((9,))
             stats[0] = _summarize(1, maxDets=20)
             stats[1] = _summarize(1, maxDets=20, iouThr=.5)
             stats[2] = _summarize(1, maxDets=20, iouThr=.75)
