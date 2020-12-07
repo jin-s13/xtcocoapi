@@ -28,5 +28,5 @@ pip install xtcocotools
 
 To install from source:
 ```shell
-make
+python setup.py install
 ```
