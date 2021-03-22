@@ -5,6 +5,7 @@ from collections import defaultdict
 from . import mask as maskUtils
 import copy
 import sys
+import warnings
 
 
 class NullWriter(object):
@@ -127,7 +128,7 @@ class COCOeval:
         if p.iouType == 'segm':
             _toMask(gts, self.cocoGt)
             _toMask(dts, self.cocoDt)
-        # set ignore flag
+        # set ignore flag and score key
         for gt in gts:
             gt['ignore'] = gt['ignore'] if 'ignore' in gt else 0
             gt['ignore'] = 'iscrowd' in gt and gt['iscrowd']
@@ -141,28 +142,82 @@ class COCOeval:
                     wholebody_gt = body_gt + foot_gt + face_gt + lefthand_gt + righthand_gt
                     g = np.array(wholebody_gt)
                     k = np.count_nonzero(g[2::3] > 0)
+                    self.score_key = 'wholebody_score'
                 elif p.iouType == 'keypoints_foot':
                     g = np.array(gt['foot_kpts'])
                     k = np.count_nonzero(g[2::3] > 0)
+                    self.score_key = 'foot_score'
                 elif p.iouType == 'keypoints_face':
                     g = np.array(gt['face_kpts'])
                     k = np.count_nonzero(g[2::3] > 0)
+                    self.score_key = 'face_score'
                 elif p.iouType == 'keypoints_lefthand':
                     g = np.array(gt['lefthand_kpts'])
                     k = np.count_nonzero(g[2::3] > 0)
+                    self.score_key = 'lefthand_score'
                 elif p.iouType == 'keypoints_righthand':
                     g = np.array(gt['righthand_kpts'])
                     k = np.count_nonzero(g[2::3] > 0)
+                    self.score_key = 'righthand_score'
                 else:
-                    k = gt['num_keypoints']
+                    g = np.array(gt['keypoints'])
+                    k = np.count_nonzero(g[2::3] > 0)
+                    self.score_key = 'score'
 
                 gt['ignore'] = (k == 0) or gt['ignore']
         self._gts = defaultdict(list)       # gt for evaluation
         self._dts = defaultdict(list)       # dt for evaluation
         for gt in gts:
             self._gts[gt['image_id'], gt['category_id']].append(gt)
+
+        flag_no_part_score = False
         for dt in dts:
+            # ignore all-zero keypoints and check part score
+            if 'keypoints' in p.iouType:
+                if p.iouType == 'keypoints_wholebody':
+                    body_dt = dt['keypoints']
+                    foot_dt = dt['foot_kpts']
+                    face_dt = dt['face_kpts']
+                    lefthand_dt = dt['lefthand_kpts']
+                    righthand_dt = dt['righthand_kpts']
+                    wholebody_dt = body_dt + foot_dt + face_dt + lefthand_dt + righthand_dt
+                    d = np.array(wholebody_dt)
+                    k = np.count_nonzero(d[2::3] > 0)
+                    if self.score_key not in dt:
+                        dt[self.score_key] = dt['score']
+                        flag_no_part_score = True
+                elif p.iouType == 'keypoints_foot':
+                    d = np.array(dt['foot_kpts'])
+                    k = np.count_nonzero(d[2::3] > 0)
+                    if self.score_key not in dt:
+                        dt[self.score_key] = dt['score']
+                        flag_no_part_score = True
+                elif p.iouType == 'keypoints_face':
+                    d = np.array(dt['face_kpts'])
+                    k = np.count_nonzero(d[2::3] > 0)
+                    if self.score_key not in dt:
+                        dt[self.score_key] = dt['score']
+                        flag_no_part_score = True
+                elif p.iouType == 'keypoints_lefthand':
+                    d = np.array(dt['lefthand_kpts'])
+                    k = np.count_nonzero(d[2::3] > 0)
+                    if self.score_key not in dt:
+                        dt[self.score_key] = dt['score']
+                        flag_no_part_score = True
+                elif p.iouType == 'keypoints_righthand':
+                    d = np.array(dt['righthand_kpts'])
+                    k = np.count_nonzero(d[2::3] > 0)
+                    if self.score_key not in dt:
+                        dt[self.score_key] = dt['score']
+                        flag_no_part_score = True
+                else:
+                    d = np.array(dt['keypoints'])
+                    k = np.count_nonzero(d[2::3] > 0)
+                if k == 0:
+                    continue
             self._dts[dt['image_id'], dt['category_id']].append(dt)
+        if flag_no_part_score:
+            warnings.warn("'{}' not found, use 'score' instead.".format(self.score_key))
         self.evalImgs = defaultdict(list)   # per-image per-category evaluation results
         self.eval     = {}                  # accumulated evaluation results
 
@@ -218,7 +273,7 @@ class COCOeval:
             dt = [_ for cId in p.catIds for _ in self._dts[imgId,cId]]
         if len(gt) == 0 and len(dt) ==0:
             return []
-        inds = np.argsort([-d['score'] for d in dt], kind='mergesort')
+        inds = np.argsort([-d[self.score_key] for d in dt], kind='mergesort')
         dt = [dt[i] for i in inds]
         if len(dt) > p.maxDets[-1]:
             dt=dt[0:p.maxDets[-1]]
@@ -242,7 +297,7 @@ class COCOeval:
         # dimention here should be Nxm
         gts = self._gts[imgId, catId]
         dts = self._dts[imgId, catId]
-        inds = np.argsort([-d['score'] for d in dts], kind='mergesort')
+        inds = np.argsort([-d[self.score_key] for d in dts], kind='mergesort')
         dts = [dts[i] for i in inds]
         if len(dts) > p.maxDets[-1]:
             dts = dts[0:p.maxDets[-1]]
@@ -350,7 +405,7 @@ class COCOeval:
         # sort dt highest score first, sort gt ignore last
         gtind = np.argsort([g['_ignore'] for g in gt], kind='mergesort')
         gt = [gt[i] for i in gtind]
-        dtind = np.argsort([-d['score'] for d in dt], kind='mergesort')
+        dtind = np.argsort([-d[self.score_key] for d in dt], kind='mergesort')
         dt = [dt[i] for i in dtind[0:maxDet]]
         iscrowd = [int(o['iscrowd']) for o in gt]
         # load computed ious
@@ -401,7 +456,7 @@ class COCOeval:
                 'gtIds':        [g['id'] for g in gt],
                 'dtMatches':    dtm,
                 'gtMatches':    gtm,
-                'dtScores':     [d['score'] for d in dt],
+                'dtScores':     [d[self.score_key] for d in dt],
                 'gtIgnore':     gtIg,
                 'dtIgnore':     dtIg,
             }
