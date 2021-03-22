@@ -2,6 +2,8 @@
 
 ## News
 
+[2021.03.22] Release xtcocotools v1.7. Support multi-part scores for COCO-WholeBody Dataset.
+
 [2020.10.17] Release xtcocotools v1.6. Fix CrowdPose stats.
 
 [2020.9.14] Release xtcocotools v1.5. Support COCO-WholeBody Dataset.
