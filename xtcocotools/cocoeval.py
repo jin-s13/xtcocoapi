@@ -159,6 +159,11 @@ class COCOeval:
                     g = np.array(gt['righthand_kpts'])
                     k = np.count_nonzero(g[2::3] > 0)
                     self.score_key = 'righthand_score'
+                elif p.iouType == 'keypoints_crowd':
+                    # 'num_keypoints' in CrowdPose dataset only counts
+                    # the visible joints (vis = 2)
+                    k = gt['num_keypoints']
+                    self.score_key = 'score'
                 else:
                     g = np.array(gt['keypoints'])
                     k = np.count_nonzero(g[2::3] > 0)
