@@ -49,7 +49,6 @@
 
 import json
 import time
-import matplotlib; matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from matplotlib.collections import PatchCollection
 from matplotlib.patches import Polygon
@@ -63,12 +62,14 @@ import sys
 PYTHON_VERSION = sys.version_info[0]
 if PYTHON_VERSION == 2:
     from urllib import urlretrieve
+    str = unicode
 elif PYTHON_VERSION == 3:
     from urllib.request import urlretrieve
 
 
 def _isArrayLike(obj):
-    return hasattr(obj, '__iter__') and hasattr(obj, '__len__')
+    # https://github.com/cocodataset/cocoapi/pull/352/
+    return not type(obj) == str and hasattr(obj, '__iter__') and hasattr(obj, '__len__')
 
 
 class COCO:
@@ -87,7 +88,9 @@ class COCO:
         if not annotation_file == None:
             print('loading annotations into memory...')
             tic = time.time()
-            dataset = json.load(open(annotation_file, 'r'))
+            # https://github.com/cocodataset/cocoapi/pull/453/
+            with open(annotation_file, 'r') as f:
+                dataset = json.load(f)
             assert type(dataset)==dict, 'annotation file format {} not supported'.format(type(dataset))
             print('Done (t={:0.2f}s)'.format(time.time()- tic))
             self.dataset = dataset
@@ -161,7 +164,8 @@ class COCO:
             else:
                 anns = self.dataset['annotations']
             anns = anns if len(catIds)  == 0 else [ann for ann in anns if ann['category_id'] in catIds]
-            anns = anns if len(areaRng) == 0 else [ann for ann in anns if ann['area'] > areaRng[0] and ann['area'] < areaRng[1]]
+            # https://github.com/cocodataset/cocoapi/pull/313/
+            anns = anns if len(areaRng) == 0 else [ann for ann in anns if ann['area'] >= areaRng[0] and ann['area'] < areaRng[1]]
         if not iscrowd == None:
             ids = [ann['id'] for ann in anns if ann['iscrowd'] == iscrowd]
         else:
@@ -235,7 +239,8 @@ class COCO:
 
     def loadImgs(self, ids=[]):
         """
-        Load anns with the specified ids.
+        # https://github.com/cocodataset/cocoapi/pull/234/
+        Load imgs with the specified ids.
         :param ids (int array)       : integer ids specifying img
         :return: imgs (object array) : loaded img objects
         """
@@ -252,7 +257,8 @@ class COCO:
         """
         if len(anns) == 0:
             return 0
-        if 'segmentation' in anns[0] or 'keypoints' in anns[0]:
+        # fix by https://github.com/cocodataset/cocoapi/pull/487/files
+        if 'segmentation' in anns[0] or 'keypoints' in anns[0] or 'bbox' in anns[0]:
             datasetType = 'instances'
         elif 'caption' in anns[0]:
             datasetType = 'captions'
@@ -265,6 +271,13 @@ class COCO:
             color = []
             for ann in anns:
                 c = (np.random.random((1, 3))*0.6+0.4).tolist()[0]
+                if 'bbox' in ann and 'segmentation' not in ann:
+                    [bbox_x, bbox_y, bbox_w, bbox_h] = ann['bbox']
+                    poly = [[bbox_x, bbox_y], [bbox_x, bbox_y + bbox_h], [bbox_x + bbox_w, bbox_y + bbox_h],
+                            [bbox_x + bbox_w, bbox_y]]
+                    np_poly = np.array(poly).reshape((4, 2))
+                    polygons.append(Polygon(np_poly))
+                    color.append(c)
                 if 'segmentation' in ann:
                     if type(ann['segmentation']) == list:
                         # polygon
@@ -328,8 +341,10 @@ class COCO:
             self.anno_file.append(resFile)
         print('Loading and preparing results...')
         tic = time.time()
-        if type(resFile) == str or (PYTHON_VERSION == 2 and type(resFile) == unicode):
-            anns = json.load(open(resFile))
+        # https://github.com/cocodataset/cocoapi/pull/367/files
+        if type(resFile) == str:
+            with open(resFile) as f:
+                anns = json.load(f)
         elif type(resFile) == np.ndarray:
             anns = self.loadNumpyAnnotations(resFile)
         else:
@@ -338,7 +353,10 @@ class COCO:
         annsImgIds = [ann['image_id'] for ann in anns]
         assert set(annsImgIds) == (set(annsImgIds) & set(self.getImgIds())), \
                'Results do not correspond to current coco set'
-        if 'caption' in anns[0]:
+        # https://github.com/cocodataset/cocoapi/pull/454/files
+        if len(anns) == 0:
+            pass
+        elif 'caption' in anns[0]:
             imgIds = set([img['id'] for img in res.dataset['images']]) & set([ann['image_id'] for ann in anns])
             res.dataset['images'] = [img for img in res.dataset['images'] if img['id'] in imgIds]
             for id, ann in enumerate(anns):

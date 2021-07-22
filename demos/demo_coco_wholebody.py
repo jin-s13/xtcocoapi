@@ -22,32 +22,41 @@ sigmas_wholebody = sigmas_body + sigmas_foot + sigmas_face + sigmas_lefthand + s
 
 cocoGt = COCO(gt_file)
 cocoDt = cocoGt.loadRes(preds)
-
 cocoEval = COCOeval(cocoGt, cocoDt, 'keypoints_body', np.array(sigmas_body), use_area=True)
 cocoEval.evaluate()
 cocoEval.accumulate()
 cocoEval.summarize()
 
+cocoGt = COCO(gt_file)
+cocoDt = cocoGt.loadRes(preds)
 cocoEval = COCOeval(cocoGt, cocoDt, 'keypoints_foot', np.array(sigmas_foot), use_area=True)
 cocoEval.evaluate()
 cocoEval.accumulate()
 cocoEval.summarize()
 
+cocoGt = COCO(gt_file)
+cocoDt = cocoGt.loadRes(preds)
 cocoEval = COCOeval(cocoGt, cocoDt, 'keypoints_face', np.array(sigmas_face), use_area=True)
 cocoEval.evaluate()
 cocoEval.accumulate()
 cocoEval.summarize()
 
+cocoGt = COCO(gt_file)
+cocoDt = cocoGt.loadRes(preds)
 cocoEval = COCOeval(cocoGt, cocoDt, 'keypoints_lefthand', np.array(sigmas_lefthand), use_area=True)
 cocoEval.evaluate()
 cocoEval.accumulate()
 cocoEval.summarize()
 
+cocoGt = COCO(gt_file)
+cocoDt = cocoGt.loadRes(preds)
 cocoEval = COCOeval(cocoGt, cocoDt, 'keypoints_righthand', np.array(sigmas_righthand), use_area=True)
 cocoEval.evaluate()
 cocoEval.accumulate()
 cocoEval.summarize()
 
+cocoGt = COCO(gt_file)
+cocoDt = cocoGt.loadRes(preds)
 cocoEval = COCOeval(cocoGt, cocoDt, 'keypoints_wholebody', np.array(sigmas_wholebody), use_area=True)
 cocoEval.evaluate()
 cocoEval.accumulate()
