@@ -1,7 +1,8 @@
 # Extended COCO API (xtcocotools)
 
 ## News
-[2021.08.04] Release xtcocotools v1.10. Merge some useful PRs from cocoapi.
+
+[2021.08.04] Release xtcocotools v1.10. Update installation dependencies.
 
 [2021.07.22] Release xtcocotools v1.9. Merge some useful PRs from cocoapi.
 
@@ -16,6 +17,7 @@
 [2020.8.25] Release xtcocotools v1.0. Support COCO, AIChallenger, and CrowdPose Dataset.
 
 ## Introduction
+
 COCO has become a standard annotation format for the task of person keypoint detection, and is widely used for multiple datasets.
 Our Extended COCO API is developed based on [@cocodataset/cocoapi](https://github.com/cocodataset/cocoapi). 
 
@@ -27,7 +29,13 @@ We provide a simple [demo_crowdpose](demos/demo_crowdpose.py) to evaluate on Cro
 [demo_coco](demos/demo_coco.py) to evaluate on COCO dataset;
 and [demo_coco_wholebody](demos/demo_coco_wholebody.py) to evaluate on COCO-WholeBody dataset;
 
+## Requirements
+
+- Linux (Windows is not officially supported)
+- Python 3.6+ (Lower versions are not fully tested)
+
 ## Installation
+
 To install from pip:
 ```shell
 pip install xtcocotools
