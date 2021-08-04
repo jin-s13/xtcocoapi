@@ -1,6 +1,8 @@
 # Extended COCO API (xtcocotools)
 
 ## News
+[2021.08.04] Release xtcocotools v1.10. Merge some useful PRs from cocoapi.
+
 [2021.07.22] Release xtcocotools v1.9. Merge some useful PRs from cocoapi.
 
 [2021.05.19] Release xtcocotools v1.8. Fix CrowdPose evaluation.
