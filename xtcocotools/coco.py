@@ -73,7 +73,7 @@ def _isArrayLike(obj):
 
 
 class COCO:
-    def __init__(self, annotation_file=None, test_index=None):
+    def __init__(self, annotation_file=None, test_index=None, ann_data=None):
         """
         Constructor of Microsoft COCO helper class for reading and visualizing annotations.
         :param annotation_file (str): location of annotation file
@@ -89,8 +89,11 @@ class COCO:
             print('loading annotations into memory...')
             tic = time.time()
             # https://github.com/cocodataset/cocoapi/pull/453/
-            with open(annotation_file, 'r') as f:
-                dataset = json.load(f)
+            if ann_data == None:
+                with open(annotation_file, 'r') as f:
+                    dataset = json.load(f)
+            else:
+                dataset = ann_data
             assert type(dataset)==dict, 'annotation file format {} not supported'.format(type(dataset))
             print('Done (t={:0.2f}s)'.format(time.time()- tic))
             self.dataset = dataset
@@ -329,7 +332,7 @@ class COCO:
             for ann in anns:
                 print(ann['caption'])
 
-    def loadRes(self, resFile):
+    def loadRes(self, resFile, resData=None):
         """
         Load result file and return a result api object.
         :param   resFile (str)     : file name of result file
@@ -343,8 +346,11 @@ class COCO:
         tic = time.time()
         # https://github.com/cocodataset/cocoapi/pull/367/files
         if type(resFile) == str:
-            with open(resFile) as f:
-                anns = json.load(f)
+            if resData == None:
+                with open(resFile) as f:
+                    anns = json.load(f)
+            else:
+                anns = resData
         elif type(resFile) == np.ndarray:
             anns = self.loadNumpyAnnotations(resFile)
         else:
