@@ -2,6 +2,8 @@
 
 ## News
 
+[2022.02.23] Release xtcocotools v1.11. Add Windows/Mac support.
+
 [2021.08.04] Release xtcocotools v1.10. Update installation dependencies.
 
 [2021.07.22] Release xtcocotools v1.9. Merge some useful PRs from cocoapi.
