@@ -20,15 +20,16 @@ jobs:
       - name: Build xtcocotools
         run: |
           pip install -r requirements.txt
+          pip install --upgread wheel
           python setup.py sdist bdist_wheel --plat-name manylinux1_x86_64
       - name: Publish distribution 📦 to Test PyPI
         run: |
-          pip install twine
+          pip install --upgrade twine
           twine upload --repository testpypi dist/* -u __token__ -p ${{ secrets.TEST_PYPI_API_TOKEN }}
       - name: Publish distribution 📦 to PyPI
         if: startsWith(github.event.ref, 'refs/tags')
         run: |
-          pip install twine
+          pip install --upgrade twine
           twine upload dist/* -u __token__ -p ${{ secrets.PYPI_API_TOKEN }}
 
   build-n-publish-mac:
@@ -44,15 +45,16 @@ jobs:
       - name: Build xtcocotools
         run: |
           pip install -r requirements.txt
+          pip install --upgread wheel
           python setup.py sdist bdist_wheel
       - name: Publish distribution 📦 to Test PyPI
         run: |
-          pip install twine
+          pip install --upgrade twine
           twine upload --repository testpypi dist/* -u __token__ -p ${{ secrets.TEST_PYPI_API_TOKEN }}
       - name: Publish distribution 📦 to PyPI
         if: startsWith(github.event.ref, 'refs/tags')
         run: |
-          pip install twine
+          pip install --upgrade twine
           twine upload dist/* -u __token__ -p ${{ secrets.PYPI_API_TOKEN }}
 
   build-n-publish-windows:
@@ -68,13 +70,14 @@ jobs:
       - name: Build xtcocotools
         run: |
           pip install -r requirements.txt
+          pip install --upgread wheel
           python setup.py sdist bdist_wheel
       - name: Publish distribution 📦 to Test PyPI
         run: |
-          pip install twine
+          pip install --upgrade twine
           twine upload --repository testpypi dist/* -u __token__ -p ${{ secrets.TEST_PYPI_API_TOKEN }}
       - name: Publish distribution 📦 to PyPI
         if: startsWith(github.event.ref, 'refs/tags')
         run: |
-          pip install twine
+          pip install --upgrade twine
           twine upload dist/* -u __token__ -p ${{ secrets.PYPI_API_TOKEN }}
