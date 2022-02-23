@@ -20,7 +20,7 @@ jobs:
       - name: Build xtcocotools
         run: |
           pip install -r requirements.txt
-          pip install --upgread wheel
+          pip install --upgrade wheel
           python setup.py sdist bdist_wheel --plat-name manylinux1_x86_64
       - name: Publish distribution 📦 to Test PyPI
         run: |
@@ -45,7 +45,7 @@ jobs:
       - name: Build xtcocotools
         run: |
           pip install -r requirements.txt
-          pip install --upgread wheel
+          pip install --upgrade wheel
           python setup.py sdist bdist_wheel
       - name: Publish distribution 📦 to Test PyPI
         run: |
@@ -70,7 +70,7 @@ jobs:
       - name: Build xtcocotools
         run: |
           pip install -r requirements.txt
-          pip install --upgread wheel
+          pip install --upgrade wheel
           python setup.py sdist bdist_wheel
       - name: Publish distribution 📦 to Test PyPI
         run: |
