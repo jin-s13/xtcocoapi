@@ -20,10 +20,10 @@ jobs:
         run: pip install setuptools --upgrade
       - name: Build xtcocotools
         run: python setup.py sdist bdist_wheel --plat-name manylinux1_x86_64
-      - name: Publish distribution to PyPI
+      - name: Publish distribution 📦 to Test PyPI
         run: |
           pip install twine
-          twine upload --repository testpypi dist/* -u __token__ -p ${{ secrets.pypi_password }}
+          twine upload --repository testpypi dist/* -u __token__ -p ${{ secrets.TEST_PYPI_API_TOKEN }}
 
   build-n-publish-mac:
     runs-on: macos-latest
@@ -38,10 +38,10 @@ jobs:
         run: pip install setuptools --upgrade
       - name: Build xtcocotools
         run: python setup.py sdist bdist_wheel
-      - name: Publish distribution to PyPI
+      - name: Publish distribution 📦 to Test PyPI
         run: |
           pip install twine
-          twine upload --repository testpypi dist/* -u __token__ -p ${{ secrets.pypi_password }}
+          twine upload --repository testpypi dist/* -u __token__ -p ${{ secrets.TEST_PYPI_API_TOKEN }}
 
   build-n-publish-windows:
     runs-on: windows-latest
@@ -56,7 +56,7 @@ jobs:
         run: pip install setuptools --upgrade
       - name: Build xtcocotools
         run: python setup.py sdist bdist_wheel
-      - name: Publish distribution to PyPI
+      - name: Publish distribution 📦 to Test PyPI
         run: |
           pip install twine
-          twine upload --repository testpypi dist/* -u __token__ -p ${{ secrets.pypi_password }}
+          twine upload --repository testpypi dist/* -u __token__ -p ${{ secrets.TEST_PYPI_API_TOKEN }}
