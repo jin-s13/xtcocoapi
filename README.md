@@ -33,8 +33,7 @@ and [demo_coco_wholebody](demos/demo_coco_wholebody.py) to evaluate on COCO-Whol
 
 ## Requirements
 
-- Linux (Windows is not officially supported)
-- Python 3.6+ (Lower versions are not fully tested)
+- Python 3.7+ (Lower versions are not fully tested)
 
 ## Installation
 
