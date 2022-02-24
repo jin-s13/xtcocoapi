@@ -7,7 +7,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build-n-publish:
+  build-n-publish-source:
     runs-on: ubuntu-18.04
     if: startsWith(github.event.ref, 'refs/tags')
     steps:
@@ -22,25 +22,48 @@ jobs:
         run: |
           pip install -r requirements.txt
           pip install --upgrade wheel
-          python setup.py sdist bdist_wheel --plat-name manylinux1_x86_64
-#      - name: Publish distribution 📦 to Test PyPI
-#        run: |
-#          pip install --upgrade twine
-#          twine upload --repository testpypi dist/* -u __token__ -p ${{ secrets.TEST_PYPI_API_TOKEN }}
+          python setup.py sdist
       - name: Publish distribution 📦 to PyPI
         run: |
           pip install --upgrade twine
           twine upload dist/* -u __token__ -p ${{ secrets.PYPI_API_TOKEN }}
 
+  build-n-publish-linux:
+    runs-on: ubuntu-18.04
+    if: startsWith(github.event.ref, 'refs/tags')
+    strategy:
+      matrix:
+        python-version: ["3.6", "3.7", "3.8", "3.9", "3.10"]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v1
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Upgrade Setuptools
+        run: pip install setuptools --upgrade
+      - name: Build xtcocotools
+        run: |
+          pip install -r requirements.txt
+          pip install --upgrade wheel
+          python setup.py bdist_wheel --plat-name manylinux1_x86_64
+      - name: Publish distribution 📦 to PyPI
+        run: |
+          pip install --upgrade twine
+          twine upload dist/*.whl -u __token__ -p ${{ secrets.PYPI_API_TOKEN }}
+
   build-n-publish-mac:
     runs-on: macos-latest
     if: startsWith(github.event.ref, 'refs/tags')
+    strategy:
+      matrix:
+        python-version: ["3.6", "3.7", "3.8", "3.9", "3.10"]
     steps:
       - uses: actions/checkout@v2
-      - name: Set up Python 3.7
+      - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v1
         with:
-          python-version: 3.7
+          python-version: ${{ matrix.python-version }}
       - name: Upgrade Setuptools
         run: pip install setuptools --upgrade
       - name: Build xtcocotools
@@ -48,10 +71,6 @@ jobs:
           pip install -r requirements.txt
           pip install --upgrade wheel
           python setup.py bdist_wheel
-#      - name: Publish distribution 📦 to Test PyPI
-#        run: |
-#          pip install --upgrade twine
-#          twine upload --repository testpypi dist/*.whl -u __token__ -p ${{ secrets.TEST_PYPI_API_TOKEN }}
       - name: Publish distribution 📦 to PyPI
         run: |
           pip install --upgrade twine
@@ -60,12 +79,15 @@ jobs:
   build-n-publish-windows:
     runs-on: windows-latest
     if: startsWith(github.event.ref, 'refs/tags')
+    strategy:
+      matrix:
+        python-version: ["3.6", "3.7", "3.8", "3.9", "3.10"]
     steps:
       - uses: actions/checkout@v2
-      - name: Set up Python 3.7
+      - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v1
         with:
-          python-version: 3.7
+          python-version: ${{ matrix.python-version }}
       - name: Upgrade Setuptools
         run: pip install setuptools --upgrade
       - name: Build xtcocotools

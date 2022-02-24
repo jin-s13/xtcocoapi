@@ -108,6 +108,7 @@ setup(
     packages=['xtcocotools'],
     package_dir = {'xtcocotools': 'xtcocotools'},
     install_requires=parse_requirements('requirements.txt'),
+    setup_requires=parse_requirements('requirements.txt'),
     version=get_version(),
     description="Extended COCO API",
     url="https://github.com/jin-s13/xtcocoapi",
