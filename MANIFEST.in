@@ -1,3 +1,4 @@
-include common/maskApi.h 
+include requirements.txt
+include common/maskApi.h
 include common/gason.cpp
 include common/gason.h
