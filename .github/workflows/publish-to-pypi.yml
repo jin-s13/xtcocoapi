@@ -50,12 +50,12 @@ jobs:
       - name: Publish distribution 📦 to Test PyPI
         run: |
           pip install --upgrade twine
-          twine upload --repository testpypi dist/* -u __token__ -p ${{ secrets.TEST_PYPI_API_TOKEN }}
+          twine upload --repository testpypi dist/*.whl -u __token__ -p ${{ secrets.TEST_PYPI_API_TOKEN }}
       - name: Publish distribution 📦 to PyPI
         if: startsWith(github.event.ref, 'refs/tags')
         run: |
           pip install --upgrade twine
-          twine upload dist/* -u __token__ -p ${{ secrets.PYPI_API_TOKEN }}
+          twine upload dist/*.whl -u __token__ -p ${{ secrets.PYPI_API_TOKEN }}
 
   build-n-publish-windows:
     runs-on: windows-latest
@@ -75,9 +75,9 @@ jobs:
       - name: Publish distribution 📦 to Test PyPI
         run: |
           pip install --upgrade twine
-          twine upload --repository testpypi dist/* -u __token__ -p ${{ secrets.TEST_PYPI_API_TOKEN }}
+          twine upload --repository testpypi dist/*.whl -u __token__ -p ${{ secrets.TEST_PYPI_API_TOKEN }}
       - name: Publish distribution 📦 to PyPI
         if: startsWith(github.event.ref, 'refs/tags')
         run: |
           pip install --upgrade twine
-          twine upload dist/* -u __token__ -p ${{ secrets.PYPI_API_TOKEN }}
+          twine upload dist/*.whl -u __token__ -p ${{ secrets.PYPI_API_TOKEN }}
