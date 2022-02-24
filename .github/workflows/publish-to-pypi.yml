@@ -9,6 +9,7 @@ concurrency:
 jobs:
   build-n-publish:
     runs-on: ubuntu-18.04
+    if: startsWith(github.event.ref, 'refs/tags')
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python 3.7
@@ -22,18 +23,18 @@ jobs:
           pip install -r requirements.txt
           pip install --upgrade wheel
           python setup.py sdist bdist_wheel --plat-name manylinux1_x86_64
-      - name: Publish distribution 📦 to Test PyPI
-        run: |
-          pip install --upgrade twine
-          twine upload --repository testpypi dist/* -u __token__ -p ${{ secrets.TEST_PYPI_API_TOKEN }}
+#      - name: Publish distribution 📦 to Test PyPI
+#        run: |
+#          pip install --upgrade twine
+#          twine upload --repository testpypi dist/* -u __token__ -p ${{ secrets.TEST_PYPI_API_TOKEN }}
       - name: Publish distribution 📦 to PyPI
-        if: startsWith(github.event.ref, 'refs/tags')
         run: |
           pip install --upgrade twine
           twine upload dist/* -u __token__ -p ${{ secrets.PYPI_API_TOKEN }}
 
   build-n-publish-mac:
     runs-on: macos-latest
+    if: startsWith(github.event.ref, 'refs/tags')
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python 3.7
@@ -47,18 +48,18 @@ jobs:
           pip install -r requirements.txt
           pip install --upgrade wheel
           python setup.py sdist bdist_wheel
-      - name: Publish distribution 📦 to Test PyPI
-        run: |
-          pip install --upgrade twine
-          twine upload --repository testpypi dist/*.whl -u __token__ -p ${{ secrets.TEST_PYPI_API_TOKEN }}
+#      - name: Publish distribution 📦 to Test PyPI
+#        run: |
+#          pip install --upgrade twine
+#          twine upload --repository testpypi dist/*.whl -u __token__ -p ${{ secrets.TEST_PYPI_API_TOKEN }}
       - name: Publish distribution 📦 to PyPI
-        if: startsWith(github.event.ref, 'refs/tags')
         run: |
           pip install --upgrade twine
           twine upload dist/*.whl -u __token__ -p ${{ secrets.PYPI_API_TOKEN }}
 
   build-n-publish-windows:
     runs-on: windows-latest
+    if: startsWith(github.event.ref, 'refs/tags')
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python 3.7
@@ -72,12 +73,11 @@ jobs:
           pip install -r requirements.txt
           pip install --upgrade wheel
           python setup.py sdist bdist_wheel
-      - name: Publish distribution 📦 to Test PyPI
-        run: |
-          pip install --upgrade twine
-          twine upload --repository testpypi dist/*.whl -u __token__ -p ${{ secrets.TEST_PYPI_API_TOKEN }}
+#      - name: Publish distribution 📦 to Test PyPI
+#        run: |
+#          pip install --upgrade twine
+#          twine upload --repository testpypi dist/*.whl -u __token__ -p ${{ secrets.TEST_PYPI_API_TOKEN }}
       - name: Publish distribution 📦 to PyPI
-        if: startsWith(github.event.ref, 'refs/tags')
         run: |
           pip install --upgrade twine
           twine upload dist/*.whl -u __token__ -p ${{ secrets.PYPI_API_TOKEN }}
