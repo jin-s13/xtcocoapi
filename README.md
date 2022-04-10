@@ -1,7 +1,7 @@
 # Extended COCO API (xtcocotools)
 
 ## News
-[2022.02.23] Release xtcocotools v1.12. Fix bugs in APm and APl calculation.
+[2022.04.10] Release xtcocotools v1.12. Fix bugs in APm and APl calculation.
 
 [2022.02.23] Release xtcocotools v1.11. Add Windows/Mac support.
 
