@@ -89,7 +89,7 @@ class COCOeval:
         else:
             # The default sigmas are used for COCO dataset.
             self.sigmas = np.array(
-                [.26, .25, .25, .35, .35, .79, .79, .72, .72, .62,.62, 1.07, 1.07, .87, .87, .89, .89])/10.0
+                [.26, .25, .25, .35, .35, .79, .79, .72, .72, .62, .62, 1.07, 1.07, .87, .87, .89, .89])/10.0
         self.cocoGt   = cocoGt              # ground truth COCO API
         self.cocoDt   = cocoDt              # detections COCO API
         self.evalImgs = defaultdict(list)   # per-image per-category evaluation results [KxAxI] elements
@@ -425,9 +425,8 @@ class COCOeval:
         T = len(p.iouThrs)
         G = len(gt)
         D = len(dt)
-        # https://github.com/cocodataset/cocoapi/pull/332/
-        gtm  = np.ones((T,G)) * -1
-        dtm  = np.ones((T,D)) * -1
+        gtm = np.ones((T, G), dtype=int) * -1
+        dtm = np.ones((T, D), dtype=int) * -1
         gtIg = np.array([g['_ignore'] for g in gt])
         dtIg = np.zeros((T,D))
         if len(ious):
@@ -438,27 +437,27 @@ class COCOeval:
                     m   = -1
                     for gind, g in enumerate(gt):
                         # if this gt already matched, and not a crowd, continue
-                        if gtm[tind,gind]>=0 and not iscrowd[gind]:
+                        if gtm[tind,gind] >= 0 and not iscrowd[gind]:
                             continue
                         # if dt matched to reg gt, and on ignore gt, stop
                         # since all the rest of g's are ignored as well because of the prior sorting
-                        if m>-1 and gtIg[m]==0 and gtIg[gind]==1:
+                        if m > -1 and gtIg[m] == 0 and gtIg[gind] == 1:
                             break
                         # continue to next gt unless better match made
                         if ious[dind,gind] < iou:
                             continue
                         # if match successful and best so far, store appropriately
-                        iou=ious[dind,gind]
-                        m=gind
+                        iou = ious[dind,gind]
+                        m = gind
                     # if match made store id of match for both dt and gt
-                    if m ==-1:
+                    if m == -1:
                         continue
-                    dtIg[tind,dind] = gtIg[m]
-                    dtm[tind,dind]  = gt[m]['id']
-                    gtm[tind,m]     = d['id']
+                    dtIg[tind, dind] = gtIg[m]
+                    dtm[tind, dind]  = gt[m]['id']
+                    gtm[tind, m]     = d['id']
         # set unmatched detections outside of area range to ignore
-        a = np.array([d['area']<aRng[0] or d['area']>aRng[1] for d in dt]).reshape((1, len(dt)))
-        dtIg = np.logical_or(dtIg, np.logical_and(dtm==0, np.repeat(a,T,0)))
+        a = np.array([d['area'] < aRng[0] or d['area'] > aRng[1] for d in dt]).reshape((1, len(dt)))
+        dtIg = np.logical_or(dtIg, np.logical_and(dtm < 0, np.repeat(a, T, 0)))
         # store results for given image and category
         return {
                 'image_id':     imgId,
@@ -522,7 +521,6 @@ class COCOeval:
                     if len(E) == 0:
                         continue
                     dtScores = np.concatenate([e['dtScores'][0:maxDet] for e in E])
-
                     # different sorting method generates slightly different results.
                     # mergesort is used to be consistent as Matlab implementation.
                     inds = np.argsort(-dtScores, kind='mergesort')
@@ -531,13 +529,12 @@ class COCOeval:
                     dtm  = np.concatenate([e['dtMatches'][:,0:maxDet] for e in E], axis=1)[:,inds]
                     dtIg = np.concatenate([e['dtIgnore'][:,0:maxDet]  for e in E], axis=1)[:,inds]
                     gtIg = np.concatenate([e['gtIgnore'] for e in E])
-                    npig = np.count_nonzero(gtIg==0 )
+                    npig = np.count_nonzero(gtIg == 0)
                     if npig == 0:
                         continue
                     # https://github.com/cocodataset/cocoapi/pull/332/
                     tps = np.logical_and(dtm >= 0, np.logical_not(dtIg))
                     fps = np.logical_and(dtm < 0, np.logical_not(dtIg))
-
                     tp_sum = np.cumsum(tps, axis=1).astype(dtype=np.float)
                     fp_sum = np.cumsum(fps, axis=1).astype(dtype=np.float)
                     for t, (tp, fp) in enumerate(zip(tp_sum, fp_sum)):
