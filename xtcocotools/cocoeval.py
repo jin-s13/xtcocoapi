@@ -425,8 +425,8 @@ class COCOeval:
         T = len(p.iouThrs)
         G = len(gt)
         D = len(dt)
-        gtm = np.ones((T, G), dtype=int) * -1
-        dtm = np.ones((T, D), dtype=int) * -1
+        gtm = np.ones((T, G), dtype=np.int64) * -1
+        dtm = np.ones((T, D), dtype=np.int64) * -1
         gtIg = np.array([g['_ignore'] for g in gt])
         dtIg = np.zeros((T,D))
         if len(ious):
