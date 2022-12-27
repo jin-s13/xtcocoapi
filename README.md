@@ -1,6 +1,8 @@
 # Extended COCO API (xtcocotools)
 
 ## News
+[2022.12.27] Release xtcocotools v1.13. Fix int overflow & solve deprecation in numpy (replace np.float with np.float64).
+
 [2022.04.10] Release xtcocotools v1.12. Fix bugs in APm and APl calculation.
 
 [2022.02.23] Release xtcocotools v1.11. Add Windows/Mac support.

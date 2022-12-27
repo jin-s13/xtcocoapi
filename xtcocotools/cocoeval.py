@@ -535,8 +535,8 @@ class COCOeval:
                     # https://github.com/cocodataset/cocoapi/pull/332/
                     tps = np.logical_and(dtm >= 0, np.logical_not(dtIg))
                     fps = np.logical_and(dtm < 0, np.logical_not(dtIg))
-                    tp_sum = np.cumsum(tps, axis=1).astype(dtype=np.float)
-                    fp_sum = np.cumsum(fps, axis=1).astype(dtype=np.float)
+                    tp_sum = np.cumsum(tps, axis=1).astype(dtype=np.float64)
+                    fp_sum = np.cumsum(fps, axis=1).astype(dtype=np.float64)
                     for t, (tp, fp) in enumerate(zip(tp_sum, fp_sum)):
                         tp = np.array(tp)
                         fp = np.array(fp)
