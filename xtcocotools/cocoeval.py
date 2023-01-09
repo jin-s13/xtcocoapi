@@ -105,6 +105,7 @@ class COCOeval:
             self.params.catIds = sorted(cocoGt.getCatIds())
             self.anno_file = cocoGt.anno_file
         self.use_area = use_area
+        self.score_key = 'score'
 
     def _prepare(self):
         '''
