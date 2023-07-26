@@ -97,7 +97,7 @@ def parse_requirements(fname='requirements.txt', with_version=True):
 ext_modules = [
     Extension(
         'xtcocotools._mask',
-        sources=['./common/maskApi.c', 'xtcocotools/_mask.pyx'],
+        sources=['xtcocotools/_mask.pyx'],
         include_dirs = [np.get_include(), './common'],
         extra_compile_args=[] # originally was ['-Wno-cpp', '-Wno-unused-function', '-std=c99'],
     )
