@@ -1,6 +1,8 @@
 # Extended COCO API (xtcocotools)
 
 ## News
+[2023.09.01] Release xtcocotools v1.14. Solve Cython3.x compatability.
+
 [2022.12.27] Release xtcocotools v1.13. Fix int overflow & solve deprecation in numpy (replace np.float with np.float64).
 
 [2022.04.10] Release xtcocotools v1.12. Fix bugs in APm and APl calculation.
