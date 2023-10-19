@@ -8,7 +8,7 @@ concurrency:
 
 jobs:
   build-n-publish-source:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     if: startsWith(github.event.ref, 'refs/tags')
     steps:
       - uses: actions/checkout@v2
@@ -29,11 +29,11 @@ jobs:
           twine upload dist/* -u __token__ -p ${{ secrets.PYPI_API_TOKEN }}
 
   build-n-publish-linux:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     if: startsWith(github.event.ref, 'refs/tags')
     strategy:
       matrix:
-        python-version: ["3.6", "3.7", "3.8", "3.9", "3.10"]
+        python-version: ["3.6", "3.7", "3.8", "3.9", "3.10", "3.11"]
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python ${{ matrix.python-version }}
@@ -57,7 +57,7 @@ jobs:
     if: startsWith(github.event.ref, 'refs/tags')
     strategy:
       matrix:
-        python-version: ["3.7", "3.8", "3.9", "3.10"]
+        python-version: ["3.7", "3.8", "3.9", "3.10", "3.11"]
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python ${{ matrix.python-version }}
@@ -81,7 +81,7 @@ jobs:
     if: startsWith(github.event.ref, 'refs/tags')
     strategy:
       matrix:
-        python-version: ["3.7", "3.8", "3.9", "3.10"]
+        python-version: ["3.7", "3.8", "3.9", "3.10", "3.11"]
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python ${{ matrix.python-version }}
